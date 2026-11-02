@@ -113,3 +113,4 @@ class StreamingEventWebSocketHandlerTest {
         assertThat(handler.getActiveSessionCount()).isZero();
     }
 }
+

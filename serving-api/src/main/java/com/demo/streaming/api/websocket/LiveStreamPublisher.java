@@ -44,3 +44,4 @@ public class LiveStreamPublisher {
         webSocketHandler.broadcast("ALERTS_UPDATE", alerts);
     }
 }
+

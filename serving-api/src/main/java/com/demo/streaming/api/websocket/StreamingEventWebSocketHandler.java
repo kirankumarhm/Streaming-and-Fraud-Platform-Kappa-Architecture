@@ -94,3 +94,4 @@ public class StreamingEventWebSocketHandler extends TextWebSocketHandler {
         return sessions.size();
     }
 }
+

@@ -571,7 +571,16 @@
         // Initialize WebSocket and initial fetches
         connectWebSocket();
         fetchAccountMetrics();
-        setInterval(fetchAccountMetrics, 2000);
+        fetchLambdaMergedView();
+
+        // Background polling for active tabs
+        setInterval(() => {
+            fetchAccountMetrics();
+            const lambdaTab = document.getElementById('tab-lambda');
+            if (lambdaTab && lambdaTab.classList.contains('active')) {
+                fetchLambdaMergedView();
+            }
+        }, 2000);
     </script>
 </body>
 </html>
