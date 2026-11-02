@@ -141,14 +141,13 @@ flowchart TD
 
 ## 3. Real-Time Streaming Visibility & System Screenshots
 
-To verify the operation and visual clarity of the real-time event streaming pipeline, this section provides visual screenshots of the live system in execution.
+To verify the operation and visual clarity of both architectural patterns, this section provides visual screenshots of the live system in execution across both modes.
 
-### 3.1. Interactive Operations & Fraud Dashboard (WebSocket Live Stream)
-The Operations Dashboard connects directly to the Spring Boot backend via a full-duplex WebSocket connection (`ws://localhost:8082/ws/events`), receiving immediate delta updates for KPI counters, sliding window volume rollups, and critical fraud triage alerts:
+### 3.1. Tab 1: Kappa Streaming View (Pure Stream Processing)
+The default dashboard view represents pure **Kappa Architecture**. All telemetry and fraud alerts flow continuously through the unified stream processor, pushing sub-second delta updates directly to the browser via WebSocket (`ws://localhost:8082/ws/events`):
 
-![Operations Dashboard Live Stream](docs/screenshots/dashboard-websocket-live.svg)
+![Kappa Streaming View](docs/screenshots/dashboard-websocket-live.svg)
 
-#### Key Dashboard Capabilities:
 * **⚡ Live WebSocket Status Indicator:** Displays real-time connection state (`⚡ WEBSOCKET LIVE STREAM`). Automatically transitions to polling mode with an exponential backoff reconnect loop if connectivity is interrupted.
 * **KPI Metrics Counters:** Live counters displaying **Active Accounts (12)**, **Aggregated Transactions (148,290)**, **Total Monetary Volume ($4,912,480.25)**, and **Unresolved Fraud Alerts (3)**.
 * **Real-Time Fraud Alert Feed:** Pushes detected fraud incidents with sub-second latency directly into the triage table with glowing row highlight animations (`.highlight-row`).
@@ -157,7 +156,21 @@ The Operations Dashboard connects directly to the Spring Boot backend via a full
 
 ---
 
-### 3.2. End-to-End Terminal Execution Pipeline
+### 3.2. Tab 2: Lambda Dual-Layer Merged View (Batch Layer + Speed Layer)
+When switching to **Tab 2**, the dashboard transforms into the **Lambda Architecture** serving layer. Here, the user can observe the results of running the batch reconciliation engine side-by-side with the real-time speed layer:
+
+![Lambda Dual-Layer Merged View](docs/screenshots/dashboard-lambda-merged-view.svg)
+
+* **🏛️ Query-Time Merged Rollup:** Implements Nathan Marz's classic Lambda formula:
+  $$\text{Query} = \text{Merge}(\text{Batch View: account\_metrics\_batch}, \text{Speed View: account\_metrics\_1min})$$
+* **📦 Batch Layer Column (Left):** Populated when `lambda-batch-processor` runs, displaying immutable, reconciled daily historical totals (`$590,412.50` for 14,920 transactions).
+* **⚡ Speed Layer Column (Right):** Displays recent tumbling window transactions not yet captured by the daily batch job.
+* **Top KPI Card (`Lambda Merged Volume`):** Updates to `$5,325,370.35`, showing the combined sum of both storage tables.
+* **Architectural Insight Banner:** Highlights the operational trade-off of Lambda—maintaining two separate database tables and dual-codebase synchronization overhead.
+
+---
+
+### 3.3. End-to-End Terminal Execution Pipeline
 The screenshot below illustrates all 4 platform processes executing simultaneously across terminal panes:
 
 ![Terminal Streaming Pipeline Flow](docs/screenshots/terminal-streaming-flow.svg)

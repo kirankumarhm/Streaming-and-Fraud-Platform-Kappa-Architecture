@@ -1,0 +1,239 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" width="1200" height="780">
+  <defs>
+    <style>
+      .bg { fill: #0B0F19; }
+      .card-bg { fill: #151D2F; stroke: #212E48; stroke-width: 1.5; rx: 10px; }
+      .table-hdr-bg { fill: #101726; }
+      .border-line { stroke: #212E48; stroke-width: 1; }
+      .text-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 20px; font-weight: 700; fill: #F3F4F6; }
+      .text-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #9CA3AF; letter-spacing: 0.5px; }
+      .text-kpi-val { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 28px; font-weight: 700; fill: #FFFFFF; }
+      .text-kpi-lbl { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #6B7280; letter-spacing: 0.8px; }
+      .text-kpi-note { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #10B981; }
+      .text-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; fill: #E5E7EB; }
+      .text-mono { font-family: "JetBrains Mono", Menlo, Monaco, Consolas, monospace; font-size: 12px; fill: #93C5FD; }
+      .badge-ws { fill: #064E3B; stroke: #10B981; stroke-width: 1; rx: 12px; }
+      .text-ws { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; fill: #34D399; }
+      .tab-active-lambda { fill: #7C3AED; rx: 6px; }
+      .tab-active-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #FFFFFF; }
+      .tab-inactive-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 500; fill: #6B7280; }
+      .formula-box-bg { fill: rgba(139, 92, 246, 0.08); stroke: rgba(139, 92, 246, 0.3); stroke-width: 1; rx: 8px; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="780" class="bg"/>
+
+  <!-- Top Header Bar -->
+  <g transform="translate(30, 24)">
+    <text x="0" y="24" class="text-title">⚡ Kappa vs. Lambda Architecture Real-Time Operations</text>
+    
+    <!-- Live WebSocket Pill -->
+    <g transform="translate(565, 6)">
+      <rect width="195" height="24" class="badge-ws"/>
+      <circle cx="14" cy="12" r="4" fill="#10B981"/>
+      <text x="26" y="16" class="text-ws">⚡ WEBSOCKET LIVE STREAM</text>
+    </g>
+
+    <!-- Header Navigation Links -->
+    <g transform="translate(860, 16)">
+      <text x="0" y="0" font-family="-apple-system, sans-serif" font-size="12" font-weight="500" fill="#3B82F6">OpenAPI 3 Docs</text>
+      <text x="110" y="0" font-family="-apple-system, sans-serif" font-size="12" font-weight="500" fill="#9CA3AF">Actuator</text>
+      <text x="180" y="0" font-family="-apple-system, sans-serif" font-size="12" font-weight="500" fill="#9CA3AF">Prometheus</text>
+      <text x="270" y="0" font-family="-apple-system, sans-serif" font-size="12" font-weight="500" fill="#9CA3AF">Redpanda</text>
+    </g>
+    <line x1="0" y1="42" x2="1140" y2="42" class="border-line"/>
+  </g>
+
+  <!-- KPI Cards (Row 1) -->
+  <g transform="translate(30, 85)">
+    <!-- Card 1: Active Accounts -->
+    <g transform="translate(0, 0)">
+      <rect width="265" height="96" class="card-bg"/>
+      <text x="20" y="26" class="text-kpi-lbl">ACTIVE ACCOUNTS</text>
+      <text x="20" y="62" class="text-kpi-val">12</text>
+      <text x="20" y="82" class="text-kpi-note">↑ 12 monitored partitions</text>
+    </g>
+
+    <!-- Card 2: Aggregated Transactions -->
+    <g transform="translate(290, 0)">
+      <rect width="265" height="96" class="card-bg"/>
+      <text x="20" y="26" class="text-kpi-lbl">AGGREGATED TRANSACTIONS</text>
+      <text x="20" y="62" class="text-kpi-val">148,290</text>
+      <text x="20" y="82" class="text-kpi-note">↑ Redpanda master commit log</text>
+    </g>
+
+    <!-- Card 3: Total Volume (Kappa Stream) -->
+    <g transform="translate(580, 0)">
+      <rect width="265" height="96" class="card-bg"/>
+      <text x="20" y="26" class="text-kpi-lbl">TOTAL VOLUME (KAPPA STREAM)</text>
+      <text x="20" y="62" class="text-kpi-val" fill="#60A5FA">$4,912,480.25</text>
+      <text x="20" y="82" class="text-kpi-note">↑ Stream-only rolling sum</text>
+    </g>
+
+    <!-- Card 4: Lambda Merged Volume (Active Focus) -->
+    <g transform="translate(870, 0)">
+      <rect width="270" height="96" class="card-bg" stroke="#8B5CF6" stroke-width="2"/>
+      <text x="20" y="26" class="text-kpi-lbl" fill="#C4B5FD">LAMBDA MERGED VOLUME</text>
+      <text x="20" y="62" class="text-kpi-val" fill="#C4B5FD">$5,325,370.35</text>
+      <text x="20" y="82" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#A78BFA">🏛️ Batch Reconciled + Speed Live</text>
+    </g>
+  </g>
+
+  <!-- Navigation Tabs (Tab 2 Active) -->
+  <g transform="translate(30, 202)">
+    <text x="20" y="20" class="tab-inactive-text">⚡ Kappa Streaming View</text>
+
+    <!-- Tab 2 Active Highlight -->
+    <rect x="195" y="0" width="260" height="32" class="tab-active-lambda"/>
+    <text x="215" y="20" class="tab-active-text">📊 Lambda Dual-Layer Merged View</text>
+
+    <text x="485" y="20" class="tab-inactive-text">⚖️ Architectural Decision Matrix</text>
+  </g>
+
+  <!-- Main Panel: Lambda Dual-Layer Merged View -->
+  <g transform="translate(30, 250)">
+    <rect width="1140" height="465" class="card-bg"/>
+
+    <!-- Panel Header with Formula & Account Dropdown -->
+    <g transform="translate(24, 20)">
+      <text x="0" y="22" class="text-title" font-size="16">🏛️ Lambda Architecture Query: Query = Merge(Batch Layer, Speed Layer)</text>
+      
+      <!-- Account Dropdown Selector -->
+      <g transform="translate(900, 2)">
+        <rect width="190" height="28" fill="#1F293D" stroke="#374151" rx="4"/>
+        <text x="12" y="18" font-family="-apple-system, sans-serif" font-size="11" fill="#E5E7EB">Account: ACC-1002 (Active)</text>
+        <text x="170" y="18" font-family="-apple-system, sans-serif" font-size="10" fill="#9CA3AF">▼</text>
+      </g>
+    </g>
+
+    <!-- Formula Box -->
+    <g transform="translate(24, 62)">
+      <rect width="1092" height="34" class="formula-box-bg"/>
+      <text x="16" y="22" font-family="JetBrains Mono, monospace" font-size="12" fill="#DDD6FE">
+        Formula: Query = Union(BatchLayer: account_metrics_batch, SpeedLayer: account_metrics_1min)  |  Status: Batch Reconciled
+      </text>
+    </g>
+
+    <!-- Two-Column Side-by-Side Comparison -->
+
+    <!-- LEFT COLUMN: Batch Layer (Historical Reconciled Days) -->
+    <g transform="translate(24, 112)">
+      <text x="0" y="18" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#C4B5FD">
+        📦 Batch Layer: account_metrics_batch (Populated by lambda-batch-processor)
+      </text>
+      <text x="0" y="34" font-family="-apple-system, sans-serif" font-size="11" fill="#94A3B8">
+        Recomputed daily by scanning commit log from Offset 0 • Immutable &amp; 100% Accurate
+      </text>
+
+      <!-- Batch Table Header -->
+      <g transform="translate(0, 46)">
+        <rect width="530" height="28" class="table-hdr-bg" rx="4"/>
+        <text x="12" y="18" class="text-sub">BATCH DATE</text>
+        <text x="135" y="18" class="text-sub">TX COUNT</text>
+        <text x="235" y="18" class="text-sub">TOTAL (USD)</text>
+        <text x="365" y="18" class="text-sub">RECONCILED AT</text>
+      </g>
+
+      <!-- Batch Row 1 -->
+      <g transform="translate(0, 80)">
+        <rect width="530" height="42" fill="#18233C" rx="4"/>
+        <line x1="0" y1="42" x2="530" y2="42" class="border-line"/>
+        <text x="12" y="26" class="text-mono" fill="#C4B5FD" font-weight="600">2026-11-02</text>
+        <text x="135" y="26" class="text-body" font-weight="600">14,920</text>
+        <text x="235" y="26" class="text-body" font-weight="700" fill="#A78BFA">$590,412.50</text>
+        <text x="365" y="26" class="text-body" fill="#9CA3AF">22:04:26 UTC</text>
+      </g>
+
+      <!-- Batch Row 2 -->
+      <g transform="translate(0, 128)">
+        <rect width="530" height="42" fill="#151D2F" rx="4"/>
+        <line x1="0" y1="42" x2="530" y2="42" class="border-line"/>
+        <text x="12" y="26" class="text-mono" fill="#C4B5FD">2026-11-01</text>
+        <text x="135" y="26" class="text-body">15,100</text>
+        <text x="235" y="26" class="text-body" font-weight="700" fill="#A78BFA">$602,110.00</text>
+        <text x="365" y="26" class="text-body" fill="#9CA3AF">Yesterday 23:59</text>
+      </g>
+
+      <!-- Batch Row 3 -->
+      <g transform="translate(0, 176)">
+        <rect width="530" height="42" fill="#151D2F" rx="4"/>
+        <line x1="0" y1="42" x2="530" y2="42" class="border-line"/>
+        <text x="12" y="26" class="text-mono" fill="#C4B5FD">2026-10-31</text>
+        <text x="135" y="26" class="text-body">13,850</text>
+        <text x="235" y="26" class="text-body" font-weight="700" fill="#A78BFA">$540,200.00</text>
+        <text x="365" y="26" class="text-body" fill="#9CA3AF">Oct 31 23:59</text>
+      </g>
+    </g>
+
+    <!-- RIGHT COLUMN: Speed Layer (Real-Time Tumbling Windows) -->
+    <g transform="translate(586, 112)">
+      <text x="0" y="18" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#93C5FD">
+        ⚡ Speed Layer: account_metrics_1min (Populated by stream-processor)
+      </text>
+      <text x="0" y="34" font-family="-apple-system, sans-serif" font-size="11" fill="#94A3B8">
+        Recent delta windows not yet in daily batch • Low Latency (Milliseconds)
+      </text>
+
+      <!-- Speed Table Header -->
+      <g transform="translate(0, 46)">
+        <rect width="530" height="28" class="table-hdr-bg" rx="4"/>
+        <text x="12" y="18" class="text-sub">WINDOW START</text>
+        <text x="160" y="18" class="text-sub">TX COUNT</text>
+        <text x="270" y="18" class="text-sub">SUM (USD)</text>
+        <text x="400" y="18" class="text-sub">PEAK TX</text>
+      </g>
+
+      <!-- Speed Row 1 -->
+      <g transform="translate(0, 80)">
+        <rect width="530" height="42" fill="#18233C" rx="4"/>
+        <line x1="0" y1="42" x2="530" y2="42" class="border-line"/>
+        <text x="12" y="26" class="text-mono" fill="#60A5FA" font-weight="600">22:04:00 UTC</text>
+        <text x="160" y="26" class="text-body" font-weight="600">42</text>
+        <text x="270" y="26" class="text-body" font-weight="700" fill="#60A5FA">$158,400.00</text>
+        <text x="400" y="26" class="text-body" fill="#FCA5A5">$12,500.00</text>
+      </g>
+
+      <!-- Speed Row 2 -->
+      <g transform="translate(0, 128)">
+        <rect width="530" height="42" fill="#151D2F" rx="4"/>
+        <line x1="0" y1="42" x2="530" y2="42" class="border-line"/>
+        <text x="12" y="26" class="text-mono" fill="#60A5FA">22:03:00 UTC</text>
+        <text x="160" y="26" class="text-body">38</text>
+        <text x="270" y="26" class="text-body" font-weight="700" fill="#60A5FA">$42,120.50</text>
+        <text x="400" y="26" class="text-body">$2,400.00</text>
+      </g>
+
+      <!-- Speed Row 3 -->
+      <g transform="translate(0, 176)">
+        <rect width="530" height="42" fill="#151D2F" rx="4"/>
+        <line x1="0" y1="42" x2="530" y2="42" class="border-line"/>
+        <text x="12" y="26" class="text-mono" fill="#60A5FA">22:02:00 UTC</text>
+        <text x="160" y="26" class="text-body">45</text>
+        <text x="270" y="26" class="text-body" font-weight="700" fill="#60A5FA">$51,900.20</text>
+        <text x="400" y="26" class="text-body">$3,100.00</text>
+      </g>
+    </g>
+
+    <!-- Bottom Architectural Comparison Callout Banner -->
+    <g transform="translate(24, 355)">
+      <rect width="1092" height="92" fill="#0D1424" stroke="#7C3AED" stroke-width="1.2" rx="8"/>
+      <text x="18" y="26" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#C4B5FD">
+        ⚖️ Architectural Insight: The Complexity Cost of Lambda vs. The Elegance of Kappa
+      </text>
+      <text x="18" y="48" font-family="-apple-system, sans-serif" font-size="11.5" fill="#E2E8F0">
+        • <tspan font-weight="700" fill="#A78BFA">Lambda Query Cost:</tspan> Serving layer must execute 2 separate queries (Batch DB + Speed DB), merge results in RAM, and reconcile boundary overlaps.
+      </text>
+      <text x="18" y="68" font-family="-apple-system, sans-serif" font-size="11.5" fill="#E2E8F0">
+        • <tspan font-weight="700" fill="#38BDF8">Kappa Simplification:</tspan> Switch to Tab 1 to see how Kappa eliminates this entire batch layer, serving everything directly from the streaming log!
+      </text>
+    </g>
+  </g>
+
+  <!-- Bottom Global Status Footer -->
+  <g transform="translate(30, 735)">
+    <text x="0" y="15" font-family="JetBrains Mono, monospace" font-size="11" fill="#6B7280">
+      GET /api/v1/lambda/accounts/ACC-1002/merged-view  |  Response Time: 4.8ms  |  Status: 200 OK (Batch + Speed Merged)
+    </text>
+  </g>
+</svg>
