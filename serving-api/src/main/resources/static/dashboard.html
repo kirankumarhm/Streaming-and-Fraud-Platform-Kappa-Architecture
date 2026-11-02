@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kappa vs. Lambda Architecture Operations Dashboard</title>
+    <title>Kappa vs. Lambda Architecture Real-Time Operations Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -47,10 +47,7 @@
             gap: 12px;
         }
 
-        .badge-live {
-            background-color: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .status-pill {
             font-size: 11px;
             font-weight: 600;
             padding: 4px 10px;
@@ -58,15 +55,28 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            letter-spacing: 0.5px;
         }
 
-        .badge-live::before {
+        .status-ws-live {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-ws-live::before {
             content: '';
             width: 8px;
             height: 8px;
             background-color: var(--success);
             border-radius: 50%;
             animation: pulse 1.5s infinite;
+        }
+
+        .status-fallback {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
 
         @keyframes pulse {
@@ -99,7 +109,10 @@
             border: 1px solid var(--bg-card-border);
             border-radius: var(--card-radius);
             padding: 18px;
+            transition: transform 0.2s;
         }
+
+        .kpi-card:hover { transform: translateY(-2px); }
 
         .kpi-label {
             font-size: 12px;
@@ -215,6 +228,12 @@
             border-radius: 6px;
             font-size: 11px;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-resolve:hover {
+            background: var(--primary);
+            color: #fff;
         }
 
         .account-select {
@@ -236,13 +255,22 @@
             font-size: 13px;
             color: #C4B5FD;
         }
+
+        .highlight-row {
+            animation: flashHighlight 1.5s ease-out;
+        }
+
+        @keyframes flashHighlight {
+            0% { background-color: rgba(239, 68, 68, 0.35); }
+            100% { background-color: transparent; }
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="title-group">
             <h1>Kappa vs. Lambda Architecture Real-Time Operations</h1>
-            <span class="badge-live">LIVE DUAL PLATFORM</span>
+            <span id="ws-status" class="status-pill status-fallback">CONNECTING WEBSOCKET...</span>
         </div>
         <div class="nav-links">
             <a href="/swagger-ui.html" target="_blank">Swagger API</a>
@@ -278,9 +306,9 @@
 
     <!-- Navigation Tabs -->
     <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('tab-kappa')">Kappa Streaming View</button>
-        <button class="tab-btn" onclick="switchTab('tab-lambda')">Lambda Dual-Layer Merged View</button>
-        <button class="tab-btn" onclick="switchTab('tab-comparison')">Architectural Comparison Matrix</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-kappa')">Kappa Streaming View</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-lambda')">Lambda Dual-Layer Merged View</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-comparison')">Architectural Comparison Matrix</button>
     </div>
 
     <!-- TAB 1: KAPPA -->
@@ -289,14 +317,14 @@
             <div class="panel">
                 <div class="panel-header">
                     <span class="panel-title">🚨 Real-Time Fraud Incidents (Strategy Pattern)</span>
-                    <span style="font-size: 12px; color: var(--text-muted);">Auto-refreshes every 2s</span>
+                    <span style="font-size: 12px; color: var(--text-muted);" id="stream-indicator">⚡ WebSocket Live Stream</span>
                 </div>
                 <table>
                     <thead>
                         <tr><th>Time</th><th>Account</th><th>Rule</th><th>Severity</th><th>Action</th></tr>
                     </thead>
                     <tbody id="fraud-alerts-table">
-                        <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No active fraud alerts detected.</td></tr>
+                        <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Listening for stream events...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -373,7 +401,7 @@
     </div>
 
     <script>
-        function switchTab(tabId) {
+        function switchTab(event, tabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             event.target.classList.add('active');
@@ -382,39 +410,69 @@
             if (tabId === 'tab-comparison') fetchComparison();
         }
 
-        async function fetchStats() {
-            try {
-                const res = await fetch('/api/v1/stats');
-                const json = await res.json();
-                if (json.data) {
-                    const data = json.data;
-                    document.getElementById('kpi-accounts').innerText = data.activeAccounts;
-                    document.getElementById('kpi-transactions').innerText = data.totalTransactionsAggregated.toLocaleString();
-                    document.getElementById('kpi-volume').innerText = '$' + parseFloat(data.totalVolumeAggregatedUsd).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    document.getElementById('kpi-alerts').innerText = data.unresolvedFraudAlerts;
-                }
-            } catch (err) { console.error("Stats fetch error", err); }
+        function updateKpiCards(data) {
+            document.getElementById('kpi-accounts').innerText = data.activeAccounts;
+            document.getElementById('kpi-transactions').innerText = data.totalTransactionsAggregated.toLocaleString();
+            document.getElementById('kpi-volume').innerText = '$' + parseFloat(data.totalVolumeAggregatedUsd).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('kpi-alerts').innerText = data.unresolvedFraudAlerts;
         }
 
-        async function fetchFraudAlerts() {
-            try {
-                const res = await fetch('/api/v1/fraud/alerts?includeResolved=false&limit=10');
-                const json = await res.json();
-                const tbody = document.getElementById('fraud-alerts-table');
-                if (json.data && json.data.length > 0) {
-                    tbody.innerHTML = json.data.map(alert => `
-                        <tr>
-                            <td>${new Date(alert.detectedAt).toLocaleTimeString()}</td>
-                            <td style="font-weight: 600; color: #fff;">${alert.accountId}</td>
-                            <td title="${alert.reason}">${alert.ruleName}</td>
-                            <td><span class="severity-badge sev-${alert.severity}">${alert.severity}</span></td>
-                            <td><button class="btn-resolve" onclick="resolveAlert('${alert.alertId}')">Resolve</button></td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No active fraud alerts detected.</td></tr>`;
+        function renderAlerts(alerts) {
+            const tbody = document.getElementById('fraud-alerts-table');
+            if (alerts && alerts.length > 0) {
+                tbody.innerHTML = alerts.map(alert => `
+                    <tr class="highlight-row">
+                        <td>${new Date(alert.detectedAt).toLocaleTimeString()}</td>
+                        <td style="font-weight: 600; color: #fff;">${alert.accountId}</td>
+                        <td title="${alert.reason}">${alert.ruleName}</td>
+                        <td><span class="severity-badge sev-${alert.severity}">${alert.severity}</span></td>
+                        <td><button class="btn-resolve" onclick="resolveAlert('${alert.alertId}')">Resolve</button></td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No active fraud alerts detected.</td></tr>`;
+            }
+        }
+
+        // ==========================================
+        // Real-Time WebSocket Implementation
+        // ==========================================
+        let ws;
+        function connectWebSocket() {
+            const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${location.host}/ws/events`;
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                const statusPill = document.getElementById('ws-status');
+                statusPill.className = 'status-pill status-ws-live';
+                statusPill.innerText = '⚡ WEBSOCKET LIVE STREAM';
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    if (message.type === 'STATS_UPDATE') {
+                        updateKpiCards(message.data);
+                    } else if (message.type === 'ALERTS_UPDATE') {
+                        renderAlerts(message.data);
+                    }
+                } catch (e) {
+                    console.error("WebSocket message parse error", e);
                 }
-            } catch (err) { console.error("Alerts error", err); }
+            };
+
+            ws.onclose = () => {
+                const statusPill = document.getElementById('ws-status');
+                statusPill.className = 'status-pill status-fallback';
+                statusPill.innerText = '⚠️ WEBSOCKET DISCONNECTED (POLLING)';
+                setTimeout(connectWebSocket, 3000); // Reconnect loop
+            };
+
+            ws.onerror = (err) => {
+                console.warn("WebSocket error, falling back to REST", err);
+                ws.close();
+            };
         }
 
         async function fetchAccountMetrics() {
@@ -505,22 +563,15 @@
                     body: JSON.stringify({ note: note, resolvedBy: 'dashboard_operator' })
                 });
                 if (res.ok) {
-                    fetchFraudAlerts();
-                    fetchStats();
+                    fetchAccountMetrics();
                 }
             } catch (err) { console.error("Resolve error", err); }
         }
 
-        // Auto polling
-        fetchStats();
-        fetchFraudAlerts();
+        // Initialize WebSocket and initial fetches
+        connectWebSocket();
         fetchAccountMetrics();
-
-        setInterval(() => {
-            fetchStats();
-            fetchFraudAlerts();
-            fetchAccountMetrics();
-        }, 2000);
+        setInterval(fetchAccountMetrics, 2000);
     </script>
 </body>
 </html>

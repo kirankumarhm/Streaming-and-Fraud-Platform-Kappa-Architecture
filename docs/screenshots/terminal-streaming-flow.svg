@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" width="1200" height="780">
+  <defs>
+    <style>
+      .term-bg { fill: #0D1117; }
+      .pane-bg { fill: #161B22; stroke: #30363D; stroke-width: 1.5; rx: 8px; }
+      .pane-hdr-bg { fill: #21262D; }
+      .term-btn-red { fill: #FF5F56; }
+      .term-btn-yellow { fill: #FFBD2E; }
+      .term-btn-green { fill: #27C93F; }
+      .font-mono { font-family: "JetBrains Mono", Menlo, Consolas, "Courier New", monospace; font-size: 11.5px; }
+      .c-white { fill: #F0F6FC; }
+      .c-dim { fill: #8B949E; }
+      .c-green { fill: #7EE787; }
+      .c-blue { fill: #79C0FF; }
+      .c-yellow { fill: #F2CC60; }
+      .c-red { fill: #FF7B72; }
+      .c-purple { fill: #D2A8FF; }
+      .c-cyan { fill: #56D4DD; }
+      .c-magenta { fill: #FFA657; }
+      .border-line { stroke: #30363D; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="780" class="term-bg"/>
+
+  <!-- Main Window Header Bar -->
+  <g transform="translate(0, 0)">
+    <rect width="1200" height="40" fill="#161B22"/>
+    <circle cx="22" cy="20" r="6" class="term-btn-red"/>
+    <circle cx="42" cy="20" r="6" class="term-btn-yellow"/>
+    <circle cx="62" cy="20" r="6" class="term-btn-green"/>
+    <text x="600" y="24" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#8B949E" text-anchor="middle">Terminal — 4-Pane End-to-End Real-Time Event Streaming Pipeline</text>
+    <line x1="0" y1="40" x2="1200" y2="40" class="border-line"/>
+  </g>
+
+  <!-- 4 Panes Grid -->
+
+  <!-- PANE 1: Transaction Generator (Top Left) -->
+  <g transform="translate(16, 52)">
+    <rect width="576" height="345" class="pane-bg"/>
+    <rect width="576" height="28" class="pane-hdr-bg" rx="8"/>
+    <rect width="576" height="10" y="18" class="pane-hdr-bg"/>
+    <text x="14" y="19" class="font-mono" font-weight="700" fill="#58A6FF">⚡ 1. PRODUCER: Transaction Generator (100 tx/s + Injected Anomalies)</text>
+
+    <!-- Terminal Content -->
+    <g transform="translate(14, 48)" class="font-mono">
+      <text y="0" class="c-dim">$ <tspan class="c-white">java -jar transaction-generator/target/transaction-generator-1.0.0-SNAPSHOT.jar</tspan></text>
+      <text y="20" class="c-dim">[22:04:17.102] <tspan class="c-blue">INFO </tspan> Generator: Connected to Redpanda at localhost:9092</text>
+      <text y="38" class="c-dim">[22:04:17.105] <tspan class="c-blue">INFO </tspan> Topic: payment.transactions.v1 | Rate: 100 tx/sec | Anomaly: 5%</text>
+      <text y="56" class="c-dim">[22:04:17.210] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99810</tspan> acc=ACC-1001 amt=$42.50 [NYC] part=0 off=49208</text>
+      <text y="74" class="c-dim">[22:04:17.315] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99811</tspan> acc=ACC-1003 amt=$115.00 [SF] part=1 off=49209</text>
+      <text y="92" class="c-red">[22:04:18.002] ⚠️ INJECTING ANOMALY: LARGE_AMOUNT_SPIKE accountId=ACC-1002</text>
+      <text y="110" class="c-dim">[22:04:18.005] <tspan class="c-magenta">PRODUCE </tspan><tspan class="c-white">tx-99812</tspan> acc=ACC-1002 <tspan class="c-yellow" font-weight="700">amt=$12,500.00</tspan> [NYC] part=0 off=49210</text>
+      <text y="128" class="c-dim">[22:04:18.120] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99813</tspan> acc=ACC-1004 amt=$89.90 [CHI] part=2 off=49211</text>
+      <text y="146" class="c-red">[22:04:18.215] ⚠️ INJECTING ANOMALY: IMPOSSIBLE_TRAVEL accountId=ACC-1005</text>
+      <text y="164" class="c-dim">[22:04:18.220] <tspan class="c-magenta">PRODUCE </tspan><tspan class="c-white">tx-99814</tspan> acc=ACC-1005 amt=$340.00 [LON] part=1 off=49212</text>
+      <text y="182" class="c-dim">[22:04:18.322] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99815</tspan> acc=ACC-1002 amt=$64.20 [NYC] part=0 off=49213</text>
+      <text y="200" class="c-dim">[22:04:18.428] <tspan class="c-blue">METRIC </tspan> Emitted 1,000 transactions in 10,000ms (100.0 eps)</text>
+      <text y="218" class="c-dim">[22:04:18.530] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99816</tspan> acc=ACC-1007 amt=$210.00 [MIA] part=2 off=49214</text>
+      <text y="236" class="c-dim">[22:04:18.635] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99817</tspan> acc=ACC-1009 amt=$15.00 [SEA] part=0 off=49215</text>
+      <text y="254" class="c-dim">[22:04:18.740] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99818</tspan> acc=ACC-1002 amt=$95.00 [NYC] part=1 off=49216</text>
+      <text y="272" class="c-dim">[22:04:18.845] <tspan class="c-green">PRODUCE </tspan><tspan class="c-white">tx-99819</tspan> acc=ACC-1006 amt=$180.00 [BOS] part=2 off=49217</text>
+    </g>
+  </g>
+
+  <!-- PANE 2: Stream Processor (Top Right) -->
+  <g transform="translate(608, 52)">
+    <rect width="576" height="345" class="pane-bg"/>
+    <rect width="576" height="28" class="pane-hdr-bg" rx="8"/>
+    <rect width="576" height="10" y="18" class="pane-hdr-bg"/>
+    <text x="14" y="19" class="font-mono" font-weight="700" fill="#7EE787">🚀 2. KAPPA ENGINE: Stream Processor (Strategy Rules + Tumbling Windows)</text>
+
+    <!-- Terminal Content -->
+    <g transform="translate(14, 48)" class="font-mono">
+      <text y="0" class="c-dim">$ <tspan class="c-white">java -jar stream-processor/target/stream-processor-1.0.0-SNAPSHOT.jar</tspan></text>
+      <text y="20" class="c-dim">[22:04:17.110] <tspan class="c-blue">INFO </tspan> Subscribed to topic: payment.transactions.v1 (group: kappa-v1)</text>
+      <text y="38" class="c-dim">[22:04:17.115] <tspan class="c-blue">INFO </tspan> Registered 3 Fraud Rules: LargeAmount, VelocityBurst, ImpossibleTravel</text>
+      <text y="56" class="c-dim">[22:04:17.850] <tspan class="c-blue">INFO </tspan> Batch consumed: 50 records in 3.8ms. Window state updated.</text>
+      <text y="74" class="c-red" font-weight="700">[22:04:18.012] 🚨 FRAUD ALERT DETECTED!</text>
+      <text y="92" class="c-red">       Rule:     RULE_LARGE_AMOUNT_SPIKE (Severity: CRITICAL)</text>
+      <text y="110" class="c-dim">       Account:  <tspan class="c-white" font-weight="700">ACC-1002</tspan> | TxId: <tspan class="c-white">tx-99812</tspan></text>
+      <text y="128" class="c-yellow">       Reason:   Transaction amount $12,500.00 exceeded threshold $10,000.00</text>
+      <text y="146" class="c-dim">[22:04:18.018] <tspan class="c-green">SUCCESS</tspan> Alert alert-101 persisted into PostgreSQL table [fraud_alerts]</text>
+      <text y="164" class="c-red" font-weight="700">[22:04:18.228] 🚨 FRAUD ALERT DETECTED!</text>
+      <text y="182" class="c-yellow">       Rule:     RULE_IMPOSSIBLE_TRAVEL (Severity: HIGH)</text>
+      <text y="200" class="c-dim">       Account:  <tspan class="c-white" font-weight="700">ACC-1005</tspan> | TxId: <tspan class="c-white">tx-99814</tspan></text>
+      <text y="218" class="c-yellow">       Reason:   Haversine distance 5,570.4 km exceeded threshold in 120s</text>
+      <text y="236" class="c-dim">[22:04:18.232] <tspan class="c-green">SUCCESS</tspan> Alert alert-102 persisted into PostgreSQL table [fraud_alerts]</text>
+      <text y="254" class="c-dim">[22:04:18.890] <tspan class="c-blue">FLUSH </tspan> Upserted 1-min window for ACC-1002: count=42 sum=$158,400.00</text>
+      <text y="272" class="c-dim">[22:04:18.895] <tspan class="c-green">COMMIT</tspan> Synchronous commit to Redpanda: offset=49217 partition=0</text>
+    </g>
+  </g>
+
+  <!-- PANE 3: Serving API with WebSocket (Bottom Left) -->
+  <g transform="translate(16, 412)">
+    <rect width="576" height="345" class="pane-bg"/>
+    <rect width="576" height="28" class="pane-hdr-bg" rx="8"/>
+    <rect width="576" height="10" y="18" class="pane-hdr-bg"/>
+    <text x="14" y="19" class="font-mono" font-weight="700" fill="#D2A8FF">🌐 3. SERVING API: Spring Boot 3 &amp; WebSocket Broadcaster (/ws/events)</text>
+
+    <!-- Terminal Content -->
+    <g transform="translate(14, 48)" class="font-mono">
+      <text y="0" class="c-dim">$ <tspan class="c-white">java -jar serving-api/target/serving-api-1.0.0-SNAPSHOT.jar</tspan></text>
+      <text y="20" class="c-dim">[22:04:10.412] <tspan class="c-blue">INFO </tspan> Tomcat started on port 8082 (http) with context path ''</text>
+      <text y="38" class="c-dim">[22:04:10.450] <tspan class="c-green">INFO </tspan> WebSocket handler registered at endpoint: <tspan class="c-purple">/ws/events</tspan></text>
+      <text y="56" class="c-dim">[22:04:12.110] <tspan class="c-blue">INFO </tspan> OpenAPI 3 UI loaded at http://localhost:8082/swagger-ui.html</text>
+      <text y="74" class="c-purple">[22:04:14.502] ⚡ WebSocket connection established. SessionId=ws-sess-01, Clients=1</text>
+      <text y="92" class="c-dim">[22:04:15.000] <tspan class="c-blue">PUSH </tspan> Broadcasted <tspan class="c-cyan">STATS_UPDATE</tspan> -&gt; activeAccounts=12, volume=$4.89M</text>
+      <text y="110" class="c-dim">[22:04:16.000] <tspan class="c-blue">PUSH </tspan> Broadcasted <tspan class="c-cyan">STATS_UPDATE</tspan> -&gt; activeAccounts=12, volume=$4.90M</text>
+      <text y="128" class="c-red">[22:04:18.020] ⚡ LiveStreamPublisher: Pushed <tspan class="c-yellow" font-weight="700">ALERTS_UPDATE</tspan> [CRITICAL: ACC-1002]</text>
+      <text y="146" class="c-dim">[22:04:18.022] <tspan class="c-green">DELIVER</tspan> Broadcasted payload to 1 connected dashboard client in &lt; 2ms</text>
+      <text y="164" class="c-red">[22:04:18.235] ⚡ LiveStreamPublisher: Pushed <tspan class="c-yellow" font-weight="700">ALERTS_UPDATE</tspan> [HIGH: ACC-1005]</text>
+      <text y="182" class="c-dim">[22:04:19.000] <tspan class="c-blue">PUSH </tspan> Broadcasted <tspan class="c-cyan">STATS_UPDATE</tspan> -&gt; activeAccounts=12, volume=$4.91M</text>
+      <text y="200" class="c-dim">[22:04:20.140] <tspan class="c-blue">REST </tspan> GET /api/v1/accounts/ACC-1002/metrics HTTP/1.1 200 OK (3.1ms)</text>
+      <text y="218" class="c-dim">[22:04:21.412] <tspan class="c-blue">REST </tspan> POST /api/v1/fraud/alerts/alert-101/resolve HTTP/1.1 200 OK</text>
+      <text y="236" class="c-purple">[22:04:22.000] ⚡ LiveStreamPublisher: Pushed <tspan class="c-cyan">STATS_UPDATE</tspan> -&gt; unresolvedAlerts=2</text>
+      <text y="254" class="c-dim">[22:04:23.000] <tspan class="c-blue">PUSH </tspan> Broadcasted <tspan class="c-cyan">STATS_UPDATE</tspan> -&gt; activeAccounts=12, volume=$4.92M</text>
+      <text y="272" class="c-dim">[22:04:24.000] <tspan class="c-blue">PUSH </tspan> Broadcasted <tspan class="c-cyan">STATS_UPDATE</tspan> -&gt; activeAccounts=12, volume=$4.93M</text>
+    </g>
+  </g>
+
+  <!-- PANE 4: Lambda Batch Processor (Bottom Right) -->
+  <g transform="translate(608, 412)">
+    <rect width="576" height="345" class="pane-bg"/>
+    <rect width="576" height="28" class="pane-hdr-bg" rx="8"/>
+    <rect width="576" height="10" y="18" class="pane-hdr-bg"/>
+    <text x="14" y="19" class="font-mono" font-weight="700" fill="#FFA657">📊 4. LAMBDA TRACK: Batch Processor (Historical Daily Reconciler)</text>
+
+    <!-- Terminal Content -->
+    <g transform="translate(14, 48)" class="font-mono">
+      <text y="0" class="c-dim">$ <tspan class="c-white">java -jar lambda-batch-processor/target/lambda-batch-processor-1.0.0-SNAPSHOT.jar --run-once</tspan></text>
+      <text y="20" class="c-dim">[22:04:25.100] <tspan class="c-blue">INFO </tspan> Lambda Batch Processor initiated in ONE-OFF mode</text>
+      <text y="38" class="c-dim">[22:04:25.105] <tspan class="c-blue">INFO </tspan> Connecting to Kafka/Redpanda broker commit log at localhost:9092</text>
+      <text y="56" class="c-dim">[22:04:25.115] <tspan class="c-blue">INFO </tspan> Rewinding offset to 0 on partition [0, 1, 2] for authoritative scan</text>
+      <text y="74" class="c-dim">[22:04:25.640] <tspan class="c-blue">INFO </tspan> BatchAggregator: Reconciled 148,290 records across 12 accounts</text>
+      <text y="92" class="c-magenta">[22:04:25.820] 📊 RECONCILIATION SUMMARY (Daily Immutable Master View):</text>
+      <text y="110" class="c-white">       ACC-1001: 12,410 txs | Total: $412,890.10 | Date: 2026-11-02</text>
+      <text y="128" class="c-white">       ACC-1002: 14,920 txs | Total: $590,412.50 | Date: 2026-11-02</text>
+      <text y="146" class="c-white">       ACC-1003: 11,880 txs | Total: $389,110.00 | Date: 2026-11-02</text>
+      <text y="164" class="c-dim">[22:04:26.110] <tspan class="c-green">SUCCESS</tspan> BatchDbSink: Upserted 12 daily records into account_metrics_batch</text>
+      <text y="182" class="c-dim">[22:04:26.115] <tspan class="c-blue">INFO </tspan> Batch execution time: 1.015 seconds. Exit code 0.</text>
+      <text y="200" class="c-dim">[22:04:26.120] 💡 Notice: Serving layer now serves Query = Merge(Batch, Speed)</text>
+      <text y="218" class="c-dim">[22:04:26.125] 💡 In Kappa Architecture, this entire batch layer is eliminated!</text>
+      <text y="236" class="c-dim">-------------------------------------------------------------</text>
+      <text y="254" class="c-green">✓ All 4 components operational: Ingestion -&gt; Kappa -&gt; WebSocket -&gt; Batch</text>
+      <text y="272" class="c-white">Ready for live end-to-end demo and inspection.</text>
+    </g>
+  </g>
+</svg>

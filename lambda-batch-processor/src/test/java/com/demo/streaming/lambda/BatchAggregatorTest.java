@@ -45,3 +45,4 @@ class BatchAggregatorTest {
         assertThat(nov3.getTotalAmount()).isEqualByComparingTo("75.00");
     }
 }
+
