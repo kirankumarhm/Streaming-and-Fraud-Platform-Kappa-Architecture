@@ -38,3 +38,4 @@ class WindowAggregatorTest {
         assertThat(finalWindow.maxAmount()).isEqualByComparingTo("250.00");
     }
 }
+

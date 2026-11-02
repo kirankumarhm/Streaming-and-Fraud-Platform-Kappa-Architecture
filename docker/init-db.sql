@@ -1,5 +1,6 @@
--- Serving Layer Database Schema for Real-Time Payment & Fraud Analytics (Kappa Architecture)
+-- Serving Layer Database Schema for Real-Time & Batch Analytics (Kappa vs Lambda Architecture)
 
+-- KAPPA / SPEED LAYER: 1-minute tumbling window metrics
 CREATE TABLE IF NOT EXISTS account_metrics_1min (
     account_id VARCHAR(64) NOT NULL,
     window_start TIMESTAMP NOT NULL,
@@ -24,6 +25,19 @@ CREATE TABLE IF NOT EXISTS account_metrics_10min (
     PRIMARY KEY (account_id, window_start)
 );
 
+-- LAMBDA BATCH LAYER: Historical master dataset reconciled batch view
+CREATE TABLE IF NOT EXISTS account_metrics_batch (
+    account_id VARCHAR(64) NOT NULL,
+    batch_date DATE NOT NULL,
+    transaction_count INT NOT NULL DEFAULT 0,
+    total_amount NUMERIC(15, 2) NOT NULL DEFAULT 0.00,
+    max_amount NUMERIC(15, 2) NOT NULL DEFAULT 0.00,
+    currency VARCHAR(10) NOT NULL,
+    reconciled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (account_id, batch_date)
+);
+
+-- FRAUD INCIDENTS
 CREATE TABLE IF NOT EXISTS fraud_alerts (
     alert_id VARCHAR(64) PRIMARY KEY,
     transaction_id VARCHAR(64) NOT NULL,
@@ -39,4 +53,4 @@ CREATE TABLE IF NOT EXISTS fraud_alerts (
 CREATE INDEX IF NOT EXISTS idx_fraud_account ON fraud_alerts (account_id);
 CREATE INDEX IF NOT EXISTS idx_fraud_detected ON fraud_alerts (detected_at DESC);
 CREATE INDEX IF NOT EXISTS idx_metrics_account_window ON account_metrics_1min (account_id, window_end DESC);
-
+CREATE INDEX IF NOT EXISTS idx_metrics_batch_account ON account_metrics_batch (account_id, batch_date DESC);

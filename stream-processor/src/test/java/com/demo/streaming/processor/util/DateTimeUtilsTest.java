@@ -23,3 +23,4 @@ class DateTimeUtilsTest {
         assertThat(windowEnd).isEqualTo(Instant.parse("2026-11-02T12:35:00Z"));
     }
 }
+

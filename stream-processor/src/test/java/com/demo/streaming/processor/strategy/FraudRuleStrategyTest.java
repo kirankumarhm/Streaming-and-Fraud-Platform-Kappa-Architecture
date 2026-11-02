@@ -77,3 +77,4 @@ class FraudRuleStrategyTest {
         return new PaymentTransaction(txId, accId, "MERCHANT", amount, "USD", loc, "DEVICE-FP", time);
     }
 }
+

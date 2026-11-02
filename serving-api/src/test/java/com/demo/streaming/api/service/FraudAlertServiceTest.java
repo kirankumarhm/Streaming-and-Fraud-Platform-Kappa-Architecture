@@ -77,3 +77,4 @@ class FraudAlertServiceTest {
                 .hasMessageContaining("Fraud alert not found");
     }
 }
+

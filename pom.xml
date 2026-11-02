@@ -16,6 +16,7 @@
         <module>event-contracts</module>
         <module>transaction-generator</module>
         <module>stream-processor</module>
+        <module>lambda-batch-processor</module>
         <module>serving-api</module>
     </modules>
 

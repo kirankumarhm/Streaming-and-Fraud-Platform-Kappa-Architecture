@@ -30,3 +30,4 @@ class GeoUtilsTest {
         assertThat(distance).isEqualTo(0.0);
     }
 }
+
